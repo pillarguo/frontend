@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>修改帖子</title>
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+function submit(){
+	var postingTitle = $("#postingTitle").val();
+	var postingContent=$("#postingContent").val();
+	$.ajax({
+		url : '/frontend/webapi/postings/2',
+		type : 'PUT', //
+		/* dataType : "json", */
+		async : true, //或false,是否异步
+		data : {
+			"postingTitle" : postingTitle,
+			"postingContent":postingContent
+		},
+		success : function(data) {	
+			alert(data.resultMsg);
+		
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert(XMLHttpRequest.status);
+		 	
+		},
+	});
+	
+}
+</script>
+
+</head>
+<body>
+标题<input type="text" id="postingTitle"></input><br><br>
+内容<input type="text" id="postingContent"></input><br><br>
+
+<input type="button" value="提交" onclick="submit();"></input>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>新建帖子</title>
+<link rel="stylesheet" type="text/css" href="css/wangEditor.min.css"></link>
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="js/wangEditor.min.js"></script>
+<script type="text/javascript" src="js/xss.min.js"></script>
+</head>
+<body>
+标题<input type="text" id="postingTitle"  maxlength="20"></input><br><br>
+版块<input type="text" id="section"  maxlength="20"></input><br><br>
+内容<br>
+<div style="width:90%">
+<div id="postingContent" style="height:400px;max-height:500px;"></div>
+</div>
+
+<button onclick="submit()">提交</button>
+
+<script type="text/javascript">
+//生成富文本编辑器
+var editor = new wangEditor('postingContent');
+// 上传图片路径
+editor.config.uploadImgUrl = '/picture/webapi/upload/front';
+editor.config.uploadImgFileName = 'myFileName';
+editor.onchange = function () {
+    console.log(this.$txt.html());
+};
+
+editor.UI.menus.fontsize = {
+        // normal 配置正常状态下显示的UI
+        normal: '<a>字号</a>',
+        // selected 配置选中状态下的UI，.selected 说明菜单在选中状态下要增加一个 selected class
+        selected: '.selected'
+    };
+//字号
+editor.config.fontsizes = {
+    // 格式：'value': 'title'
+    1: '最小',
+    2: '较小',
+    3: '小',
+    4: '正常',
+    5: '大',
+    6: '较大',
+    7: '最大'
+};
+
+editor.config.menus = [
+    'head',
+    'bold',
+    'italic',
+    'underline',
+];
+
+//创建
+editor.create();
+</script>
+<script type="text/javascript">
+//提交资讯内容
+function submit() {		
+	//xss过滤
+	var postingTitle = filterXSS($("#postingTitle").val());
+	var section=$("#section").val()
+	// 获取编辑器区域完整html代码
+	 var postingContent=editor.$txt.html();
+	 
+	//xss过滤
+    var postingContent = filterXSS(postingContent);  
+
+	if (postingTitle == "") {
+		alert("请输入标题");
+		return;
+	}
+	
+	$.ajax({
+		url : '/frontend/webapi/postings/new_posting',
+		type : 'POST', //		
+		async : true, //或false,是否异步
+		data : {
+			"postingTitle":postingTitle,			
+			"postingContent" :postingContent,
+			"section":section
+		},
+		success : function(data) {	
+			
+			alert(data.resultMsg);		
+			
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {	
+			
+			 alert(XMLHttpRequest.status);/*
+			alert(XMLHttpRequest.readyState);
+			alert(textStatus); */
+		},
+	});
+
+}
+
+
+</script>
+</body>
+</html>

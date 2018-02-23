@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>新建举报</title>
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="js/md5.js"></script>
+<script>
+function submit(){
+	var suspectUserId = $("#suspectUserId").val();
+	var replyContent=$("#replyContent").val();
+	
+	if (suspectUserId == "") {
+		alert("请输入被举报人");
+		return;
+	}
+	if (replyContent == "") {
+		alert("请输入内容");
+		return;
+	}
+	
+	$.ajax({
+		url : '/frontend/webapi/reports/new_report',
+		type : 'POST', //
+		/* dataType : "json", */
+		async : true, //或false,是否异步
+		data : {
+			"suspectUserId" : suspectUserId,
+			"replyContent":replyContent
+		},
+		success : function(data) {	
+			alert(data.resultMsg);
+		
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert(XMLHttpRequest.status);
+		 	
+		},
+	});
+}
+</script>
+</head>
+<body>
+
+嫌疑人id<input type="text" id="suspectUserId"></input><br><br>
+举报内容<input type="text" id="replyContent"></input><br><br>
+
+<input type="button" value="提交" onclick="submit();"></input>
+</body>
+</html>

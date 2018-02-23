@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>新建评论</title>
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+//提交资讯内容
+function submit() {		
+	
+	var postingId=$("#postingId").val();	
+	var commentContent=$("#commentContent").val();
+	
+	$.ajax({
+		url : '/frontend/webapi/comments/new_comment',
+		type : 'POST', //		
+		async : true, //或false,是否异步
+		data : {
+			"postingId":postingId,			
+			"commentContent" :commentContent
+		},
+		success : function(data) {	
+			
+			alert(data.resultMsg);		
+			
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {	
+			
+			 alert(XMLHttpRequest.status);/*
+			alert(XMLHttpRequest.readyState);
+			alert(textStatus); */
+		},
+	});
+
+}
+
+
+</script>
+</head>
+<body>
+帖子id<input type="text" id="postingId"  maxlength="20"></input><br><br>
+内容<input type="text" id="commentContent"  maxlength="20"></input><br><br>
+
+<button onclick="submit()">提交</button>
+</body>
+</html>

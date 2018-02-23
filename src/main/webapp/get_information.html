@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>获取资讯</title>
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<script>
+function submit(){
+	var info_id=$("#info_id").val();
+	$.ajax({
+		url : '/frontend/webapi/informations/'+info_id,
+		type : 'GET', //
+		/* dataType : "json", */
+		async : true, //或false,是否异步
+		
+		success : function(data) {	
+			alert(data);
+		
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert(XMLHttpRequest.status);		 	
+		},
+	});
+}
+</script>
+</head>
+
+<body>
+资讯id<input id="info_id"></input>
+<input type="button" value="获取资讯" onclick="submit();"></input>
+</body>
+</html>

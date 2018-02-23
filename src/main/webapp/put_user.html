@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>修改id=2的用户</title>
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="js/md5.js"></script>
+<script>
+function submit(){
+	var userName = $("#userName").val();
+	var password=$("#password").val();
+	var password2=$("#password2").val();
+	var nickname=$("#nickname").val();
+	if (userName == "") {
+		alert("请输入用户名");
+		return;
+	}
+	if (password == "") {
+		alert("请输入密码");
+		return;
+	}
+	if (password2 == "") {
+		alert("请确认密码");
+		return;
+	}
+	if (password2 != password) {
+		alert("密码不一致");
+		return;
+	}
+	if (nickname == "") {
+		alert("昵称不为空");
+		return;
+	}
+	$.ajax({
+		url : '/frontend/webapi/cmdc_user/2',
+		type : 'PUT', //
+		/* dataType : "json", */
+		async : true, //或false,是否异步
+		data : {
+			"userName" : userName,
+			"password":hex_md5(password),
+			"nickname":nickname
+		},
+		success : function(data) {	
+			alert(data.resultMsg);
+		
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert(XMLHttpRequest.status);
+		 	
+		},
+	});
+}
+</script>
+</head>
+<body>
+
+&nbsp;&nbsp;用户名<input type="text" id="userName"></input><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;密码<input type="text" id="password"></input><br><br>
+确认密码<input type="text" id="password2"></input><br><br>
+昵称<input type="text" id="nickname"></input><br><br>
+<input type="button" value="提交" onclick="submit();"></input>
+</body>
+</html>

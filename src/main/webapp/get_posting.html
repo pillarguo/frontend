@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>获取帖子</title>
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<script>
+function submit(){
+	
+	$.ajax({
+		url : '/frontend/webapi/postings/2',
+		type : 'GET', //
+		/* dataType : "json", */
+		async : true, //或false,是否异步
+		
+		success : function(data) {	
+			alert(data);
+		
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert(XMLHttpRequest.status);
+		 	/*if(XMLHttpRequest.status==401){
+		 		window.location.href = 'login.jsp';
+		 	}
+			 alert(XMLHttpRequest.readyState);
+			alert(textStatus);  */
+		},
+	});
+}
+</script>
+</head>
+
+<body>
+<input type="button" value="获取id=2的帖子" onclick="submit();"></input>
+</body>
+</html>

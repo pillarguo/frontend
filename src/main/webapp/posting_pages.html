@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>分页查询</title>
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<script>
+function submit(){
+	var pageNum = $("#pageNum").val();
+	var pageSize=$("#pageSize").val();
+	
+	$.ajax({
+		url : '/frontend/webapi/postings/pages',
+		type : 'GET', //
+		/* dataType : "json", */
+		async : true, //或false,是否异步
+		data : {
+			"pageNum" : pageNum,
+			"pageSize":pageSize
+		},
+		success : function(data) {	
+			alert(data);
+		
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert(XMLHttpRequest.status);
+		 
+		},
+	});
+}
+</script>
+</head>
+<body>
+页码<input type="text" id="pageNum"></input><br><br>
+每页条数<input type="text" id="pageSize"></input><br><br>
+<input type="button" value="分页查询" onclick="submit();"></input>
+</body>
+</html>

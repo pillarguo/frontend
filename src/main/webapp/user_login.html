@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>login</title>
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="js/md5.js"></script>
+<script type="text/javascript">
+function submit(){
+	var userName = $("#userName").val();
+	var password=$("#password").val();
+	var identify=$("#identify").val();
+	if (userName == "") {
+		alert("请输入用户名");
+		return;
+	}
+	if (password == "") {
+		alert("请输入密码");
+		return;
+	}
+	
+	$.ajax({
+		url : '/frontend/webapi/cmdc_user/user_login',
+		type : 'POST', //
+		/* dataType : "json", */
+		async : true, //或false,是否异步
+		data : {
+			"userName" : userName,
+			"password":hex_md5(password),
+			"identify":identify
+		},
+		success : function(data) {	
+			alert(data.resultMsg);
+		
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert(XMLHttpRequest.status);
+		 	/*if(XMLHttpRequest.status==401){
+		 		window.location.href = 'login.jsp';
+		 	}
+			 alert(XMLHttpRequest.readyState);
+			alert(textStatus);  */
+		},
+	});
+}
+//验证码
+function myReload() {
+	document.getElementById("CreateCheck").src = "webapi/AuthImageServlet?nocache=" + Math.random()*1000;
+}
+</script>
+</head>
+<body>
+
+用户名<input type="text" id="userName"></input><br><br>
+	密码<input type="text" id="password"></input><br><br>
+<!-- 验证码 -->
+		<input name="checkCode" type="text" id="identify" title="" size="8" maxlength="4" /> 		
+		<img src="webapi/AuthImageServlet" id="CreateCheck"	align="middle" onclick="myReload();" alt="重新加载" title="看不清,换一个">
+<input type="button" value="提交" onclick="submit();"></input>
+</body>
+</html>

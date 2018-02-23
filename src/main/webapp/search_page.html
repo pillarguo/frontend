@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+function submit(){
+	
+	var keyword = $.trim($("#keyword").val());
+	var tip=document.getElementById("tip");
+	if (keyword == "") {		
+		tip.style.visibility="visible";		
+		return;
+	}else{
+		tip.style.visibility="hidden";	
+	}	
+	$.ajax({
+		url : '/frontend/webapi/postings/search_page',
+		type : 'GET', //
+		/* dataType : "json", */
+		async : true, //或false,是否异步
+		data : {
+			"keyword" : keyword			
+		},
+		success : function(data) {	
+			alert(data.pageNum);
+			/* for(i=0;i<data.length;i++){
+				alert(i);
+			} */
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+				alert(XMLHttpRequest.status);
+		 	/*if(XMLHttpRequest.status==401){
+		 		window.location.href = 'login.jsp';
+		 	}
+			 alert(XMLHttpRequest.readyState);
+			alert(textStatus);  */
+		},
+	});
+}
+
+
+</script>
+
+</head>
+<body>
+    <h2>查询</h2>
+   <input id="keyword"></input>
+   <input type="button" value="提交" onclick="submit();"></input>
+   <p style="visibility: hidden;" id="tip">请输入查询条件</p>
+</body>
+</html>
